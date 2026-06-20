@@ -154,11 +154,9 @@ flowchart LR
 ## 📊 Atividade
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/GussCloud/GussCloud/output/pacman-contribution-graph-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/GussCloud/GussCloud/output/pacman-contribution-graph.svg">
-  <img alt="pacman contribution graph" src="https://raw.githubusercontent.com/GussCloud/GussCloud/output/pacman-contribution-graph.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/GussCloud/GussCloud/output/snake-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/GussCloud/GussCloud/output/snake.svg">
+  <img alt="Snake animation da contribution graph" src="https://raw.githubusercontent.com/GussCloud/GussCloud/output/snake.svg">
 </picture>
-
-<img src="https://raw.githubusercontent.com/GussCloud/GussCloud/output/snake.svg" alt="Snake animation" />
 
 ###
