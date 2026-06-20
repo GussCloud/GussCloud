@@ -51,6 +51,60 @@ Atuo com **arquitetura de soluções**, desenhando sistemas que precisam ser **e
 
 ###
 
+## 🗺️ Arquitetura de Referência
+
+Visão de uma plataforma típica que projeto: **orientada a eventos**, com **API Gateway**, serviços desacoplados, mensageria assíncrona e observabilidade ponta a ponta.
+
+```mermaid
+flowchart LR
+    subgraph Clients["Clientes"]
+        Web["Web / SPA"]
+        Mobile["Mobile"]
+        Ext["Sistemas Externos"]
+    end
+
+    GW["API Gateway"]
+
+    subgraph Services["Serviços de Domínio"]
+        Auth["Auth Service"]
+        Core["Core / Business"]
+        Integ["Integrações"]
+    end
+
+    Broker(["Message Broker<br/>(pub/sub · filas)"])
+
+    subgraph Workers["Processamento Assíncrono"]
+        W1["Workers / Consumers"]
+        Auto["Automação & Agentes IA"]
+    end
+
+    subgraph Data["Dados"]
+        DB[("Bancos Relacionais")]
+        Cache[("Cache")]
+    end
+
+    Obs["Observabilidade<br/>logs · métricas · traces"]
+
+    Web --> GW
+    Mobile --> GW
+    Ext --> GW
+    GW --> Auth
+    GW --> Core
+    GW --> Integ
+    Core <--> DB
+    Core <--> Cache
+    Core -- eventos --> Broker
+    Integ -- eventos --> Broker
+    Broker --> W1
+    Broker --> Auto
+    W1 --> DB
+    Auto --> Integ
+    Services -.-> Obs
+    Workers -.-> Obs
+```
+
+###
+
 ## 🛠️ Stack Técnica
 
 **Linguagens & Runtime**
