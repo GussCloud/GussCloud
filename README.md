@@ -53,14 +53,13 @@ Atuo com **arquitetura de soluções**, desenhando sistemas que precisam ser **e
 
 ## 🗺️ Arquitetura de Referência
 
-Visão de uma plataforma típica que projeto: **orientada a eventos**, com **API Gateway**, serviços desacoplados, mensageria assíncrona e observabilidade ponta a ponta.
+Visão de uma plataforma real que projeto: **orientada a eventos**, com **API Gateway**, serviços desacoplados, mensageria assíncrona, integrações com canais e provedores, e observabilidade ponta a ponta.
 
 ```mermaid
 flowchart LR
     subgraph Clients["Clientes"]
         Web["Web / SPA"]
-        Mobile["Mobile"]
-        Ext["Sistemas Externos"]
+        Mobile["Mobile / PDV"]
     end
 
     GW["API Gateway"]
@@ -68,7 +67,9 @@ flowchart LR
     subgraph Services["Serviços de Domínio"]
         Auth["Auth Service"]
         Core["Core / Business"]
-        Integ["Integrações"]
+        Pay["Pagamentos"]
+        Msg["Mensageria / Canais"]
+        Fiscal["Fiscal / NF-e"]
     end
 
     Broker(["Message Broker<br/>(pub/sub · filas)"])
@@ -79,26 +80,49 @@ flowchart LR
     end
 
     subgraph Data["Dados"]
-        DB[("Bancos Relacionais")]
-        Cache[("Cache")]
+        DB[("PostgreSQL · Oracle")]
+        Cache[("Redis")]
+    end
+
+    subgraph External["Integrações Externas"]
+        Pix["Pix / PSP"]
+        Wpp["WhatsApp API"]
+        TG["Telegram"]
+        IG["Instagram"]
+        N8N["n8n (workflows)"]
+        LLM["Claude / MCP"]
+        SEFAZ["SEFAZ"]
     end
 
     Obs["Observabilidade<br/>logs · métricas · traces"]
 
     Web --> GW
     Mobile --> GW
-    Ext --> GW
     GW --> Auth
     GW --> Core
-    GW --> Integ
+    GW --> Pay
+    GW --> Msg
+    GW --> Fiscal
+
     Core <--> DB
     Core <--> Cache
     Core -- eventos --> Broker
-    Integ -- eventos --> Broker
+    Pay -- eventos --> Broker
+    Msg -- eventos --> Broker
+    Fiscal -- eventos --> Broker
+
     Broker --> W1
     Broker --> Auto
     W1 --> DB
-    Auto --> Integ
+
+    Pay <--> Pix
+    Msg <--> Wpp
+    Msg <--> TG
+    Msg <--> IG
+    Fiscal <--> SEFAZ
+    Auto <--> LLM
+    Auto <--> N8N
+
     Services -.-> Obs
     Workers -.-> Obs
 ```
